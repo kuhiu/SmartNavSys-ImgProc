@@ -1,3 +1,3 @@
 # Examples
 
-Ejemplos basados en el libro "Hands-On Image Processing with Python".
+Examples based on the "Hands-On Image Processing with Python" book.
