@@ -68,7 +68,7 @@ El objetivo de este trabajo es entonces lograr el entrenamiento de una SqueezeNe
 
 # Desarrollos
 
-* [Entrenamiento](https://github.com/Fuschetto97/Tesis/blob/main/pImagen/SqueezeDetTraining/README_Des1.md)
+* [Entrenamiento](./README_Des1.md)
 
 
     
