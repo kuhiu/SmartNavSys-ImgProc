@@ -1,3 +1,3 @@
 # SmartNavSys-ImgProc
 
-SmartNavSys-ImgProc es un repositorio stand alone en GitHub para desarrollar distintas versiones del modulo de procesamiento de imagenes implementado para [SmartNavSys](https://github.com/kuhiu/SmartNavSys-ImgProc)
+SmartNavSys-ImgProc is an stand alone repository to develop different versions of img processing module implemented on [SmartNavSys](https://github.com/kuhiu/SmartNavSys)
