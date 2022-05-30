@@ -2,6 +2,8 @@
 
 PoC using png server app.
 
+![alt text](img/opencv.png "OpenCV on Zybo pic")
+
 # Reference 
 
 https://github.com/jinchenglee/zybo_linux_setup_doc
