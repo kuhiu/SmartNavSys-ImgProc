@@ -1,6 +1,6 @@
 echo "----- Downloading OpenCV"
-git clone https://github.com/opencv/opencv.git
-git clone https://github.com/opencv/opencv_contrib.git
+git clone https://github.com/opencv/opencv.git --branch 3.4
+git clone https://github.com/opencv/opencv_contrib.git --branch 3.4
 
 echo "----- Creating necessary directories"
 cd opencv
