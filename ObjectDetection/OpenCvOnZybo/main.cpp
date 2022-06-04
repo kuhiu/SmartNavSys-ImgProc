@@ -57,16 +57,16 @@ int main(int argc, char** argv)
         memcpy(img.data, img_read, IMG_HEIGHT*IMG_WIDTH*IMG_CHANNEL);
 
         // Gray scale 1 channel
-        cvtColor(img, img, COLOR_RGBA2GRAY);
+        //cvtColor(img, img, COLOR_RGBA2GRAY);
 
         // Blur the image
-        GaussianBlur(img, img, Size(3,3), 0);
+        //GaussianBlur(img, img, Size(3,3), 0);
 
         // Edge detector
-        Canny(img,img,10,100);
+        //Canny(img,img,60,100);
 
         // Gray Scale 3 channels
-        cvtColor(img, img, COLOR_GRAY2RGBA);
+        //cvtColor(img, img, COLOR_GRAY2RGBA);
 
         // Write mem address 
         memcpy(img_write, img.data, IMG_HEIGHT*IMG_WIDTH*IMG_CHANNEL);
