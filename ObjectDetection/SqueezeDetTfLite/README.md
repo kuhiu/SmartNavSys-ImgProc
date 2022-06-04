@@ -2,7 +2,7 @@
 
 ![alt text](./img/example.png "Title")
 
-The white number is the time to execute the interpreter. 
+The white number is the time to execute the interpreter in seg. 
 
 # Model link to download 
 https://tfhub.dev/tensorflow/lite-model/efficientdet/lite0/detection/default/1
