@@ -1,3 +1,9 @@
+# App usign tfLite model
+
+![alt text](./img/example.png "Title")
+
+The white number is the time to execute the interpreter. 
+
 # Model link to download 
 https://tfhub.dev/tensorflow/lite-model/efficientdet/lite0/detection/default/1
 
