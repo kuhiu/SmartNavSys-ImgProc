@@ -19,7 +19,7 @@ int save_cX(struct sembuf *sb, int semid, FILE *fdd_State, int cX)
     char * line = NULL;
     size_t len = 0;  
     int lineNro;
-    char aux[10];
+    char aux[50];
 
     // Tomo el recurso
     sb->sem_op = -1;         
@@ -50,7 +50,7 @@ int save_cX(struct sembuf *sb, int semid, FILE *fdd_State, int cX)
             default:        // Encontro
                 //printf("La linea es la nro: %d, offset: %d \n", lineNro, loffset); 
                 //printf("line %s \n", line); 
-                sprintf(line, "ImgProc, Direccion = %03lld", cX);
+                sprintf(line, "ImgProc, Direccion = %03d", cX);
                 fseek(fdd_State, (loffset-lread), SEEK_SET);
                 if ( ( fwrite(line, sizeof(char), strlen(line), fdd_State)) != strlen(line))
                 {
@@ -101,7 +101,7 @@ int main(int argc, char** argv)
     // Measure time
     struct timespec begin, end; 
 
-    int largest_area=0;
+    int largest_area=0, area_is_zero=1;
     int largest_contour_index=0;
 
     int cX, cY;
@@ -155,10 +155,8 @@ int main(int argc, char** argv)
 
     img.create(IMG_HEIGHT,IMG_WIDTH,CV_8UC4);
 
-    uper_green = cv::Scalar(90,255,255);
-    lower_green = cv::Scalar(20,100,100);
-
-    DEBUG_PRINT(("Llegue\n"));
+    uper_green = cv::Scalar(80,255,255);
+    lower_green = cv::Scalar(30,100,100);
 
     while(1){
         // Read mem address 
@@ -170,55 +168,60 @@ int main(int argc, char** argv)
         // Get HSV image
         cv::cvtColor(img, img_bgr, cv::COLOR_RGBA2BGR);
         cv::cvtColor(img_bgr, img_hsv, cv::COLOR_BGR2HSV);
-        DEBUG_PRINT(("Llegue4\n"));
+
         // Mask
         cv::inRange(img_hsv, lower_green, uper_green, green_mask);
-        DEBUG_PRINT(("Llegue2\n"));
+
         // Find Contours
         cv::findContours(green_mask, green_contours, cv::RETR_TREE, cv::CHAIN_APPROX_SIMPLE);
-        DEBUG_PRINT(("Llegue2\n"));
+
         for( size_t i = 0; i< green_contours.size(); i++ ){ // iterate through each contour.
             double area = cv::contourArea( green_contours[i] );  //  Find the area of contour
 
             if( area > largest_area ){
                 largest_area = area;
                 largest_contour_index = i;               //Store the index of largest contour
+                area_is_zero = 0;
                 //bounding_rect = cv::boundingRect( green_contours[i] ); // Find the bounding rectangle for biggest contour
             }
         }
-        DEBUG_PRINT(("Llegue2\n"));
-        // Largest contour
-        largest_contour = green_contours[largest_contour_index];
-        DEBUG_PRINT(("Llegue5\n"));
-        // Draw largest contour
-        cv::drawContours(img, green_contours, largest_contour_index, cv::Scalar(0,0,0,255), 2);
 
-        // Center of the contour
-        M = cv::moments(largest_contour);
-	    cX = int(M.m10 / M.m00);
-	    cY = int(M.m01 / M.m00);
+        if(!area_is_zero){
+            // Largest contour
+            largest_contour = green_contours[largest_contour_index];
 
-        printf("cX: %d\n", cX);
-        // Draw center of area
-        cv::circle(img, cv::Point(cX, cY), 7, (255, 255, 255, 255), -1);
+            // Draw largest contour
+            cv::drawContours(img, green_contours, largest_contour_index, cv::Scalar(0,0,0,255), 2);
 
-        // Stop measuring time and calculate the elapsed time
-        clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &end);
-        long seconds = end.tv_sec - begin.tv_sec;
-        long nanoseconds = end.tv_nsec - begin.tv_nsec;
-        double elapsed = seconds + nanoseconds*1e-9;
+            // Center of the contour
+            M = cv::moments(largest_contour);
+            cX = int(M.m10 / M.m00);
+            cY = int(M.m01 / M.m00);
 
-        // Write time elapsed on image
-        cv::putText(img, std::to_string(elapsed), cv::Point(100,220), cv::FONT_HERSHEY_TRIPLEX, 0.5, font_Color, 1);
+            DEBUG_PRINT(("cX: %d\n", cX));
+            // Draw center of area
+            cv::circle(img, cv::Point(cX, cY), 7, (255, 255, 255, 255), -1);
 
-        DEBUG_PRINT(("Llegue2\n"));
+            // Stop measuring time and calculate the elapsed time
+            clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &end);
+            long seconds = end.tv_sec - begin.tv_sec;
+            long nanoseconds = end.tv_nsec - begin.tv_nsec;
+            double elapsed = seconds + nanoseconds*1e-9;
+
+            // Write time elapsed on image
+            cv::putText(img, std::to_string(elapsed), cv::Point(100,220), cv::FONT_HERSHEY_TRIPLEX, 0.5, font_Color, 1);
+        }
+        else
+            cX = -1;
+
         // Save cX in state
         save_cX( &sb, semid, fdd_State, cX);
-        DEBUG_PRINT(("Llegue3\n"));
+
         // Write mem address 
         memcpy(img_write, img.data, IMG_HEIGHT*IMG_WIDTH*IMG_CHANNEL);
 
         largest_area = 0;
+        area_is_zero = 1;
     }
 
     return 0;

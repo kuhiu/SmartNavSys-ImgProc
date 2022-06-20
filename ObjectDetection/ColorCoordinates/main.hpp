@@ -11,21 +11,21 @@
 #include <sys/ipc.h>
 #include <sys/sem.h>
 #include <unistd.h>
+#include <sstream>
 
-#define MAX_RETRIES 10
+#define MAX_RETRIES                10
 #define FRAMEBUFFER_READ_OFFSET   0x01000000  // Image ram position
 #define FRAMEBUFFER_WRITE_OFFSET  0x02000000  // Image ram position
 #define IMG_WIDTH                 320   // Image size
 #define IMG_HEIGHT                240
 #define IMG_CHANNEL                 4
-#define FILE_NAME "test.png"
 
-#define DEBUG            1
+//#define DEBUG            1
 
 #ifdef DEBUG
 # define DEBUG_PRINT(x) printf x
 #else
-# define DEBUG_PRINT(x) do {} while (0)
+# define DEBUG_PRINT(x) 
 #endif
 
 
