@@ -155,8 +155,8 @@ int main(int argc, char** argv)
 
     img.create(IMG_HEIGHT,IMG_WIDTH,CV_8UC4);
 
-    uper_green = cv::Scalar(80,255,255);
-    lower_green = cv::Scalar(30,100,100);
+    uper_green = cv::Scalar(70,255,255);
+    lower_green = cv::Scalar(50,100,100);
 
     while(1){
         // Read mem address 
